@@ -4,7 +4,7 @@ The eakansascity.org website: a static one-page site (originally a Webflow expor
 
 ## Structure
 
-- `index.html` at the root
+- `index.html` (home) and `calendar.html` (Luma events embed) at the root
 - `css/`, `js/`, `images/` alongside it
 
 No build step. It's plain HTML/CSS/JS.
