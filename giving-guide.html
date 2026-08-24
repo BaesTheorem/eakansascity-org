@@ -22,8 +22,15 @@
   <style>
   .gg{--ink:#1a1b1f;--soft:#43464d;--teal:#058294;--teal-deep:#04606e;--red:#b0413e;
     --paper:#fff;--paper2:#f4f4f4;--line:#e4e6ea;--line2:#cfd3d9;
-    color:var(--ink);text-align:left}
-  .gg h2{margin:44px 0 6px;font-size:28px;line-height:1.2}
+    color:var(--ink);text-align:left;line-height:1.55}
+  /* The Webflow theme sets very large line-heights and heading margins globally;
+     normalize everything inside the guide so wrapped lines read as lines. */
+  .gg p{line-height:1.55;margin:0 0 10px}
+  .gg h3{line-height:1.25;margin:0}
+  .gg li{line-height:1.55}
+  .gg small{line-height:1.4}
+  .gg ul,.gg ol{margin-top:0}
+  .gg h2{margin:44px 0 6px;font-size:28px;line-height:1.2;font-weight:600}
   .gg .secsub{font-size:15px;color:var(--soft);margin:0 0 18px;max-width:820px}
   .gg a{color:var(--teal-deep)}
   .gg .hedge{border:1px solid var(--line2);border-left:4px solid var(--teal);background:var(--paper2);
