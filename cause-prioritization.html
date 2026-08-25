@@ -231,12 +231,21 @@
 .cp .facs{grid-template-columns:1fr;gap:12px}
 }
 @media(max-width:640px){
-.cp .mrow,.cp .rrow{grid-template-columns:minmax(110px,150px) 1fr 78px;gap:8px;padding:8px 10px}
-.cp .crow{grid-template-columns:minmax(110px,140px) 1fr 74px;gap:8px;padding:8px 10px}
-.cp .qrow,.cp .qaxis{grid-template-columns:minmax(110px,150px) 1fr 96px;gap:8px;padding-left:10px;padding-right:10px}
-.cp .qaxis .ax span.mid{display:none}
-.cp .sbar-row{grid-template-columns:minmax(110px,150px) 1fr 90px;gap:8px;padding:8px 10px}
-.cp .tile .val{font-size:1.6rem}
+  /* Stack every chart row: name and value share the top line, the bar gets the
+     full width below. Three narrow columns left the bars ~100px wide on phones. */
+  .cp .mrow,.cp .rrow,.cp .crow,.cp .sbar-row,.cp .qrow{grid-template-columns:1fr auto;grid-auto-rows:auto;gap:2px 12px;padding:10px 12px}
+  .cp .mrow .nm,.cp .rrow .nm,.cp .crow .nm,.cp .sbar-row .nm,.cp .qrow .nm{grid-area:1/1}
+  .cp .mrow .end,.cp .rrow .end,.cp .crow .end,.cp .sbar-row .end,.cp .qrow .end{grid-area:1/2}
+  .cp .mrow .barzone,.cp .crow .barzone{grid-area:2/1/3/3;margin-top:4px}
+  .cp .rrow .rzone{grid-area:2/1/3/3;margin-top:2px}
+  .cp .sbar-row .sbarzone{grid-area:2/1/3/3;margin-top:4px}
+  .cp .qrow .qzone{grid-area:2/1/3/3;margin-top:6px}
+  .cp .qaxis{grid-template-columns:1fr;gap:2px;padding:8px 12px 0}
+  .cp .qaxis>div:last-child{display:none}
+  .cp .qaxis .ax span.mid{display:inline}
+  .cp .qaxis .ax span:first-child{transform:none}
+  .cp .qaxis .ax span:last-child{transform:translateX(-100%)}
+  .cp .tile .val{font-size:1.6rem}
 }
   </style>
 </head>
