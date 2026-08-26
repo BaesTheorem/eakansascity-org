@@ -49,27 +49,31 @@
 .cp .sub{font-size:17px;color:var(--ink-soft);margin:0 0 12px;max-width:820px;line-height:1.55}
 .cp .method{font-size:14px;color:var(--ink-soft);margin:0 0 4px;max-width:820px}
 .cp button{font:inherit;background:none;border:none;cursor:pointer}
-/* outline */
-.cp .toc{border:1px solid var(--line-strong);margin:22px 0 6px;max-width:860px;background:var(--paper-2)}
-.cp .toc>summary{cursor:pointer;padding:11px 16px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ink-soft);font-weight:600}
-.cp .toc[open]>summary{border-bottom:1px solid var(--line)}
-.cp .toc h2{display:none}
-.cp .toc nav{padding:8px 0;max-height:60vh;overflow-y:auto}
+/* two-column shell: sticky outline on the left, document on the right */
+.cp .shell{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0 40px;align-items:start}
+.cp .shell>.toc{grid-column:1}
+.cp .shell>.doc{grid-column:2;min-width:0}
+.cp .toc{position:sticky;top:24px;margin:14px 0 0;max-height:calc(100vh - 48px);overflow-y:auto;overscroll-behavior:contain;border-left:1px solid var(--line-strong)}
+.cp .toc>summary{display:none}
+.cp .toc h2{display:block;font-size:12px;line-height:1.3;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);font-weight:600;margin:0 0 8px;padding:0 0 0 16px;border:none}
+.cp .toc nav{padding:0}
 .cp .toc a{display:block;font-size:14px;line-height:1.3;color:var(--ink-soft);padding:6px 10px 6px 16px;
-  border-left:2px solid transparent;text-decoration:none}
-.cp .toc a:hover{color:var(--ink);background:#fff}
-.cp .toc a.lv3{padding-left:32px;font-size:13.5px}
+  border-left:2px solid transparent;margin-left:-1px;text-decoration:none}
+.cp .toc a:hover{color:var(--ink);background:var(--paper-2)}
+.cp .toc a.lv3{padding-left:30px;font-size:13px}
 .cp .toc a.on{color:var(--ink);border-left-color:var(--s1);font-weight:600}
-.cp h2[id],.cp h3[id],.cp section[id]{scroll-margin-top:90px}
+.cp .toc a.lv3.on{border-left-color:var(--s2)}
+@media(max-width:1100px){
+  .cp .shell{display:block}
+  .cp .toc{position:static;max-height:none;border:1px solid var(--line-strong);background:var(--paper-2);margin:22px 0 6px;max-width:860px}
+  .cp .toc>summary{display:block;cursor:pointer;padding:11px 16px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  .cp .toc[open]>summary{border-bottom:1px solid var(--line)}
+  .cp .toc h2{display:none}
+  .cp .toc nav{padding:8px 0;max-height:60vh;overflow-y:auto}
+}
+.cp h2[id],.cp h3[id],.cp section[id]{scroll-margin-top:24px}
 .cp a{color:var(--leaf-deep);text-decoration:none}
 .cp a:hover{text-decoration:underline}
-.cp h2[id],.cp h3[id],.cp section[id]{scroll-margin-top:74px}
-.cp .backlink{font-size:.9rem;font-weight:500;color:var(--ink-soft)}
-.cp .backlink:hover{color:var(--leaf-deep)}
-.cp .theme-toggle{border:1px solid var(--line-strong);width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-soft)}
-.cp .theme-toggle:hover{color:var(--gold);border-color:var(--gold)}
-.cp .theme-toggle .icon-sun{display:none}
 .cp .verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;border:1px solid var(--line-strong);margin:34px 0 0}
 .cp .v{padding:16px 18px;border-right:1px solid var(--line)}
 .cp .v:last-child{border-right:none}
@@ -269,11 +273,15 @@
       </div>
 
 
-<details class="toc" id="toc">
+<div class="shell">
+
+<details class="toc" id="toc" open>
   <summary>Outline</summary>
   <h2>On this page</h2>
   <nav id="toc-nav" aria-label="Page outline"></nav>
 </details>
+
+<div class="doc">
 
 <section id="tldr">
   <h2>TL;DR</h2>
@@ -285,18 +293,6 @@
     <div class="v"><p class="rk">3 · P(top 3) = 65%</p><h3>Elderly falls</h3><p>Cost-saving interventions, an evidence-based local program running at a deficit with no funder behind it, and the least-funded cause of death in America relative to its mortality.</p></div>
     <div class="v"><p class="rk">4 · P(top 3) = 28%</p><h3>Hypertension control</h3><p>$2,800&ndash;15,000/QALY levers against the region's single largest burden, deliverable through safety-net clinics with no policy fight.</p></div>
   </div>
-
-  <h3 id="marginal">The headline metric: DALYs averted per marginal $10M/yr</h3>
-  <p class="secsub">One number that integrates all three ITN factors: if an additional $10M/yr showed up in Kansas City, how many disability-adjusted life years would it buy against each problem, through the best verified locally-feasible intervention, at current levels of crowding? Whiskers are the 10th&ndash;90th percentile of the Monte Carlo.</p>
-  <div class="legend-row">
-    <span class="key"><span class="sw" style="background:var(--s1)"></span>Central estimate</span>
-    <span class="key"><span class="whisk"></span>10&ndash;90% interval</span>
-  </div>
-  <div class="rowchart" id="marg-chart" role="list"></div>
-
-  <h3 id="stability">How stable is the ranking?</h3>
-  <p class="secsub">Each dot is a problem's median rank across 10,000 Monte Carlo draws; the line is its 10th&ndash;90th percentile rank range. Tight lines mean the ranking is confident; long lines mean reasonable people can land in different places. Violence has the longest line in the study.</p>
-  <div class="rankstrip" id="rank-chart" role="list"></div>
 </section>
 
 <section id="ea">
@@ -411,7 +407,7 @@
   <h3>The local money map</h3>
   <p class="secsub">Annual dollars visible against each problem, from verified budgets and 990 filings. This is deliberately not a like-for-like comparison and should not be read as one: the rows differ in geography (state, county, city, metro philanthropy) and in how much of the money is prevention rather than treatment or response. It is a map of where money exists at all, and the informative rows are the ones at zero.</p>
   <div class="rowchart n3" id="money-chart" role="list"></div>
-  <p class="secsub" style="margin-top:12px">Two things fall out of that chart. The largest single flow, the opioid settlement, is the one least constrained by scarcity and most constrained by deployment: the pool roughly doubled to ~$900M over fifteen years while 50-plus Missouri jurisdictions spent nothing at all in 2025 and Jackson County left ~$4M unspent.<sup class="c"><a href="#t43">[43]</a></sup> And the two rows at zero are not small problems. Elderly falls is second in the factor product and third on the headline metric, and no Kansas City funder targets it.<sup class="c"><a href="#t44">[44]</a></sup> Read that row carefully, though, because the follow-on charity vetting sharpened it: there is no dedicated falls funder, but there is a fundable vehicle, an evidence-based falls program running inside an organization posting three straight years of operating deficits.<sup class="c"><a href="#t44">[44]</a></sup> Tobacco, the reverse case, has state program money in the chart above and no clean local giving vehicle at all. "Most neglected cause" and "best gift you can make this month" are not the same question.</p>
+  <p class="secsub" style="margin-top:12px">Two things fall out of that chart. The largest single flow, the opioid settlement, is the one least constrained by scarcity and most constrained by deployment: the pool roughly doubled to ~$900M over fifteen years while 50-plus Missouri jurisdictions spent nothing at all in 2025 and Jackson County left ~$4M unspent.<sup class="c"><a href="#t43">[43]</a></sup> And the two rows at zero are not small problems. Elderly falls is second in the factor product and third in the marginal-DALY view, and no Kansas City funder targets it.<sup class="c"><a href="#t44">[44]</a></sup> Read that row carefully, though, because the follow-on charity vetting sharpened it: there is no dedicated falls funder, but there is a fundable vehicle, an evidence-based falls program running inside an organization posting three straight years of operating deficits.<sup class="c"><a href="#t44">[44]</a></sup> Tobacco, the reverse case, has state program money in the chart above and no clean local giving vehicle at all. "Most neglected cause" and "best gift you can make this month" are not the same question.</p>
 
   <h3>Missouri's public health floor is the meta-problem</h3>
   <p class="secsub">State public health funding per capita. Missouri is last of all fifty states, at less than half of 49th-place Indiana and about a fifth of Kansas.</p>
@@ -421,7 +417,7 @@
   <h3>Local institutions do not aim where this ranking points</h3>
   <ul class="tight">
     <li><b>The dominant funder left disease-specific work.</b> Health Forward Foundation holds $905M in assets and spends ~$50M/yr, and its current purpose framework names no disease areas at all, having moved to an equity-and-housing frame.<sup class="c"><a href="#t46">[46]</a></sup> That is a defensible strategy and it is also why several top causes have no institutional champion here.</li>
-    <li><b>Every hospital needs assessment converges on the same answer.</b> All three verified CHNAs (University Health 2025&ndash;28, Children's Mercy 2022&ndash;25, Saint Luke's 2023) name mental and behavioral health first, and two name violence.<sup class="c"><a href="#t47">[47]</a></sup> Mental illness ranks 7th in the factor product and 9th on the headline metric. Neither infant mortality nor falls, two of the top six, appears in any of them.</li>
+    <li><b>Every hospital needs assessment converges on the same answer.</b> All three verified CHNAs (University Health 2025&ndash;28, Children's Mercy 2022&ndash;25, Saint Luke's 2023) name mental and behavioral health first, and two name violence.<sup class="c"><a href="#t47">[47]</a></sup> Mental illness ranks 7th in the factor product and 9th in the marginal-DALY view. Neither infant mortality nor falls, two of the top six, appears in any of them.</li>
     <li><b>National research funding tracks burden badly, in different ways in different studies.</b> The denominators differ and these figures are not directly comparable to each other: gun violence received 1.6% of the funding its mortality predicts<sup class="c"><a href="#t48">[48]</a></sup>; neck pain 0.83% of its DALY-predicted level, a 120&times; gap, with low back pain at 13.88%<sup class="c"><a href="#t49">[49]</a></sup>; and on dollar residuals, depression (&minus;$719M), injuries (&minus;$691M) and COPD (&minus;$613M) are the most underfunded against burden while AIDS (+$2,474M) is the most overfunded.<sup class="c"><a href="#t50">[50]</a></sup> Falls is the least-funded cause of death in America relative to its mortality, with ~$53M in cumulative federal prevention grants since 2014 against $50&ndash;80B/yr in costs.<sup class="c"><a href="#t48">[48]</a><a href="#t51">[51]</a></sup></li>
   </ul>
   <p class="secsub" style="margin-top:14px">That is what neglectedness looks like from the inside: not an absence of money in Kansas City, but money pointed somewhere else, for reasons each institution can defend on its own terms.</p>
@@ -435,13 +431,6 @@
 </section>
 
 
-<section id="portfolio-sketch">
-  <h2>What a marginal $10M/yr would buy</h2>
-  <div class="prose">
-    <p>A sketch, not a plan. Splitting $10M across the top four: roughly $3M for a quitline and cessation surge (media plus free nicotine replacement, Missouri-side), $3M for naloxone saturation, low-barrier medication access, and settlement-deployment advocacy, $2M for falls programs (CAPABLE and Otago through senior centers and Medicaid waivers), and $2M for self-measured blood pressure and team-based hypertension care through the safety-net clinics. Central estimate on the model's own numbers: <b>1,500&ndash;2,500 DALYs averted per year at scale</b>, with the falls and cessation lines partly cost-saving to Medicare and Medicaid. Every line is deliverable by organizations that already exist here, without a single preempted policy fight.</p>
-  </div>
-</section>
-
 <section id="method">
   <h2>Method</h2>
   <div class="prose">
@@ -452,10 +441,14 @@
     <p><b>Framework note.</b> WHO GHE uses a frontier life table, so YLL-per-death runs higher than IHME GBD conventions. Everything here shares one framework, so ranks and ratios are internally consistent; absolute DALYs run ~10&ndash;15% above what an IHME-based version would report. IHME's own US ranking (CVD &gt; cancer &gt; musculoskeletal &gt; mental disorders) matches this table's top four.<sup class="c"><a href="#t69">[69]</a></sup></p>
     <p><b>Double-counting rules.</b> The league table holds mutually exclusive disease and injury endpoints. Risk factors and structural drivers (smoking, obesity, alcohol-as-risk, air quality, poverty, housing) overlap those endpoints; they are shown hatched in the damages chart and never summed with it. Value-of-statistical-life and quality-of-life valuations are excluded from the dollar figures for the same reason: they are the dollar shadow of the DALY column.</p>
     <p><b>Known limitations of the burden model.</b> Kansas blocks county-level cancer-registry data by statute, so Wyandotte cancer leans on state rates. Kansas-side overdose and suicide counts are estimates. Musculoskeletal, digestive, neurological and falls have no local instrument. 2021 base rates embed COVID-era and peak-violence conditions, which makes the violence and drug KC/US ratios conservative. Scaling from the 5-county core to the full 2.2M MSA adds roughly 15&ndash;17% to most rows and changes no ranks.</p>
-    <p><b>The Monte Carlo</b> draws every factor from a triangular distribution over its range, 10,000 times (fixed seed), and records each problem's rank per draw. The full simulation is a <a href="https://github.com/BecomingStronger/becomingstronger.github.io/blob/main/tools/kc-itn-simulation.py" target="_blank" rel="noopener">60-line stdlib Python script</a> that reproduces every number in the table above. Two scoring views run in parallel: marginal DALYs per $10M (the headline) and the factor product (the per-problem list above). Where they disagree, the disagreement is the finding: falls sits near the top of the factor product but its modest burden caps absolute gains; musculoskeletal disease scores high on burden-times-neglect but has no deployable intervention, making it a research bet, not a program bet.</p>
+    <p><b>The Monte Carlo</b> draws every factor from a triangular distribution over its range, 10,000 times (fixed seed), and records each problem's rank per draw. The full simulation is a <a href="https://github.com/BecomingStronger/becomingstronger.github.io/blob/main/tools/kc-itn-simulation.py" target="_blank" rel="noopener">60-line stdlib Python script</a> that reproduces every number in the table above. Two scoring views run in parallel: the marginal-DALY view (DALYs averted per marginal $10M/yr) and the factor product (the per-problem list above). Where they disagree, the disagreement is the finding: falls sits near the top of the factor product but its modest burden caps absolute gains; musculoskeletal disease scores high on burden-times-neglect but has no deployable intervention, making it a research bet, not a program bet.</p>
     <p><b>Post-vetting update.</b> A follow-on pass vetting Kansas City's actual charities fed back into three neglectedness scores, each moved by half a point, the granularity the whole scale is scored at: falls 9.5 to 9.0 (delivery infrastructure exists after all, small and deficit-funded), tobacco 8.5 to 9.0 (no local giving vehicle exists at all for the top cause), overdose 6.0 to 6.5 (the metro's joint federal harm-reduction grant lapsed in May). Re-running the <a href="https://github.com/BecomingStronger/becomingstronger.github.io/blob/main/tools/kc-itn-simulation.py" target="_blank" rel="noopener">simulation</a>: View A is unchanged in every number, which is expected rather than reassuring, since View A ranks by marginal DALYs per $10M and never reads N at all. View B's only change is tobacco and falls swapping first and second, and every median stays inside the previously published rank intervals. For a donor, note the asymmetry the scores cannot hold: tobacco now ranks first in both views but has nothing to fund without building the channel, while falls has a starving, fundable vehicle today.</p>
 <p><b>What this is not.</b> Local institutions' own priorities entered only as crowdedness data, never as conclusions. The cost-per-QALY figures are not inflation-harmonized across sources, so they support comparisons by order of magnitude, not by digit. The T and N scores are my judgment over the verified evidence, with the reasoning for each one stated in full above so it can be argued with specifically. A state-level actor's ranking would differ (alcohol and tobacco taxes jump); so would a researcher's (musculoskeletal jumps).</p>
   </div>
+
+  <h3 id="stability">How stable is the ranking?</h3>
+  <p class="secsub">Each dot is a problem's median rank across 10,000 Monte Carlo draws; the line is its 10th&ndash;90th percentile rank range. Tight lines mean the ranking is confident; long lines mean reasonable people can land in different places. Violence has the longest line in the study.</p>
+  <div class="rankstrip" id="rank-chart" role="list"></div>
 </section>
 
 <section id="sources">
@@ -536,16 +529,16 @@
 
       <p class="method" style="margin:44px 0 0;padding-top:16px;border-top:1px solid var(--line)">Researched and modeled by Alex Hedtke. The interactive original, the published Monte Carlo code, and the companion giving guide live at <a href="https://becomingstronger.github.io/kc-cause-prioritization.html" target="_blank" rel="noopener">becomingstronger.github.io</a>. Corrections welcome at <a href="mailto:info@eakansascity.org">info@eakansascity.org</a>.</p>
 </div>
+</div>
+      <div id="tip" role="status" aria-live="polite"></div>
+    </div>
   </div>
-  <div id="tip" role="status" aria-live="polite"></div>
   <script src="js/jquery-3.4.1.min.js" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="></script>
   <script src="js/webflow.js" type="text/javascript"></script>
   <script>
+
 /* scoped so the local $ helper never shadows jQuery for webflow.js */
 (function(){
-'use strict';
-function $(s,c){return (c||document).querySelector(s)}
-
 'use strict';
 function $(s,c){return (c||document).querySelector(s)}
 /* id, name, I DALYs K [pt,lo,hi], T [lo,pt,hi], N [lo,pt,hi], marg [lo,pt,hi], rankA[med,lo,hi], pTop3, rankB[med,lo,hi], evidence [impact,tractability,neglectedness] */
@@ -559,7 +552,7 @@ var D=[
    "<p>Naloxone distribution costs $438/QALY in the base case (95% CI $48&ndash;$1,706), reaching $14K/QALY only in a worst-case scenario where overdose is rarely witnessed<sup class='c'><a href='#t58'>[58]</a></sup>; people in medication treatment for opioid use disorder die at a half to a third the rate of those out of it<sup class='c'><a href='#t59'>[59]</a></sup>. Fentanyl test strips are legal in Missouri since 2023 and a naloxone standing order exists; syringe services remain illegal in Missouri (legalization bills parked in committee)<sup class='c'><a href='#t40'>[40]</a></sup>. KC's decline is lagging the state badly (metro &minus;10% vs Missouri &minus;26.4% in 2024<sup class='c'><a href='#t21'>[21]</a></sup>), with deaths rising among seniors and Black men<sup class='c'><a href='#t20'>[20]</a></sup>: catch-up headroom, not saturation.</p>",
    "<p>Missouri's settlement pool has roughly doubled to ~$900M over 15 years, but 50+ jurisdictions spent nothing in 2025 and Jackson County left ~$4M unspent<sup class='c'><a href='#t43'>[43]</a></sup>; dedicated local philanthropy is ~$3M<sup class='c'><a href='#t60'>[60]</a></sup>. The money exists; deployment is the neglected margin. The metro's joint federal harm-reduction grant also lapsed in May, which moved this score up half a point.</p>"]],
  ["falls","Elderly falls",[13,11,17],[6.0,7.0,8.0],[8,9,9.5],[500,1200,2600],[3,2,5],65,[2,1,3],
-  ["<p>One of the three smallest burdens in the study, and the reason falls never wins the headline metric no matter how cheap the intervention gets. 69% of it is disability rather than death, which is the honest shape of the problem: the hip fracture, the fear of falling, the lost independence, not usually the funeral. Jackson County's fall-death rate of 13.4 per 100K sits essentially on the national 13.5<sup class='c'><a href='#t25'>[25]</a></sup>, so the local adjustment is a flat 1.00. Confidence medium: past the death certificates there is no local instrument for non-fatal falls, and non-fatal falls are most of the burden.</p>",
+  ["<p>One of the three smallest burdens in the study, and the reason falls never tops the marginal-DALY view no matter how cheap the intervention gets. 69% of it is disability rather than death, which is the honest shape of the problem: the hip fracture, the fear of falling, the lost independence, not usually the funeral. Jackson County's fall-death rate of 13.4 per 100K sits essentially on the national 13.5<sup class='c'><a href='#t25'>[25]</a></sup>, so the local adjustment is a flat 1.00. Confidence medium: past the death certificates there is no local instrument for non-fatal falls, and non-fatal falls are most of the burden.</p>",
    "<p>CAPABLE costs ~$3,000 per participant against ~$22,120 in two-year Medicare savings<sup class='c'><a href='#t55'>[55]</a></sup>; Otago cut fall rates 32&ndash;39% in a verified trial<sup class='c'><a href='#t56'>[56]</a></sup>. Nothing is preempted, nothing is controversial, and parts are cost-saving.</p>",
    "<p>No Kansas City funder targets falls prevention, a verified absence<sup class='c'><a href='#t44'>[44]</a></sup>. The follow-on charity vetting later found a delivery vehicle that the first sweep missed, an evidence-based falls program running at an operating deficit, so the honest reading is unfunded rather than nonexistent. Nationally, falls is the least-funded cause of death relative to its mortality<sup class='c'><a href='#t48'>[48]</a></sup>, with ~$53M in cumulative federal prevention grants since 2014 against $50&ndash;80B/yr in costs<sup class='c'><a href='#t51'>[51]</a></sup>. The boring runner-up, and the one a donor can actually reach this month.</p>"]],
  ["cvd","Cardiovascular / hypertension",[99,84,116],[5.5,6.5,7.5],[5.0,6.0,7.0],[400,900,2000],[4,3,6],28,[4,4,5],
@@ -802,25 +795,6 @@ function attachTip(el,html){
     host.appendChild(row);
   });
 })();
-/* marginal chart (View A order) */
-(function(){
-  var host=$('#marg-chart');
-  var sorted=D.slice().sort(function(a,b){return b[5][1]-a[5][1]});
-  var max=Math.max.apply(null,D.map(function(d){return d[5][2]}));
-  sorted.forEach(function(d){
-    var m=d[5];
-    var row=document.createElement('div');row.className='mrow';row.tabIndex=0;row.setAttribute('role','listitem');
-    row.innerHTML='<div class="nm">'+d[1]+'</div>'+
-      '<div class="barzone"><div class="mbar" style="width:'+(m[1]/max*100)+'%"></div>'+
-      '<div class="whisker" style="left:'+(m[0]/max*100)+'%;width:'+((m[2]-m[0])/max*100)+'%"></div></div>'+
-      '<div class="end">'+m[1].toLocaleString()+'<small>['+m[0].toLocaleString()+'–'+m[2].toLocaleString()+']</small></div>';
-    attachTip(row,'<b>'+d[1]+'</b><div class="trow"><span>DALYs/$10M/yr</span><span>'+m[1].toLocaleString()+' ['+m[0].toLocaleString()+'–'+m[2].toLocaleString()+']</span></div>'+
-      '<div class="trow"><span>Burden</span><span>'+d[2][0]+'K DALYs/yr</span></div>'+
-      '<div class="trow"><span>T / N scores</span><span>'+d[3][1]+' / '+d[4][1]+'</span></div>'+
-      (d[7]?'<div class="trow"><span>P(top 3)</span><span>'+d[7]+'%</span></div>':''));
-    host.appendChild(row);
-  });
-})();
 /* rank stability strip */
 (function(){
   var host=$('#rank-chart');
@@ -906,7 +880,7 @@ function fscore(d){return FAC.reduce(function(a,f){return a+f.pts(d)},0)}
   if(!nav) return;
   var slug=function(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')};
   var items=[];
-  document.querySelectorAll('.cp > section[id], .cp .doc > section[id]').forEach(function(sec){
+  document.querySelectorAll('.cp .doc > section[id]').forEach(function(sec){
     var h2=sec.querySelector(':scope > h2');
     if(!h2) return;
     items.push({id:sec.id, text:h2.textContent.trim(), lv:2, el:h2});
@@ -924,7 +898,7 @@ function fscore(d){return FAC.reduce(function(a,f){return a+f.pts(d)},0)}
   var marks=items.map(function(it){return it.el});
   var current=null;
   function spy(){
-    var y=window.scrollY+90, best=null;
+    var y=window.scrollY+30, best=null;
     for(var i=0;i<marks.length;i++){
       if(marks[i].getBoundingClientRect().top+window.scrollY<=y) best=items[i].id; else break;
     }
@@ -952,7 +926,10 @@ function fscore(d){return FAC.reduce(function(a,f){return a+f.pts(d)},0)}
   addEventListener('scroll',function(){if(tick)return;tick=true;requestAnimationFrame(function(){spy();tick=false})},{passive:true});
   spy();
   /* collapsed by default on narrow screens, always open beside the document */
-  nav.addEventListener('click',function(e){if(e.target.tagName==='A')toc.open=false});
+  var narrow=matchMedia('(max-width:1100px)');
+  var sync=function(){toc.open=!narrow.matches};
+  narrow.addEventListener('change',sync); sync();
+  nav.addEventListener('click',function(e){if(e.target.tagName==='A'&&narrow.matches)toc.open=false});
 })();
 
 })();
