@@ -23,6 +23,10 @@ html[data-theme="dark"] a{color:#e8eaed}
 html[data-theme="dark"] .navigation-wrap,
 html[data-theme="dark"] .navigation-items{background-color:#101214}
 html[data-theme="dark"] [data-nav-menu-open]{background:#1a1d20}
+/* the current-page nav item pins near-black #1a1b1f; flip it to the dark ink */
+html[data-theme="dark"] .navigation-item.w--current{color:#e8eaed}
+html[data-theme="dark"] .navigation-item.w--current:hover,
+html[data-theme="dark"] .navigation-item.w--current:active{color:#b0b6bd}
 /* the logo and menu glyph are near-black art on transparency; flip them and
    swing the hue back so the teal bulb stays teal */
 html[data-theme="dark"] .logo-image,
