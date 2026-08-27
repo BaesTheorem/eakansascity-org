@@ -44,6 +44,11 @@ html[data-theme="dark"] .intro-header{background-color:#1a1d20}
 .theme-toggle{position:relative}
 .theme-toggle::after{content:"";position:absolute;inset:-5px}
 
+/* About and Our group should fit one screen without scrolling: the export
+   framed them with 80px top / 120px + 80px bottom margins of empty space */
+.home-content-wrap{margin-top:16px;margin-bottom:32px}
+.about-grid{margin-bottom:24px}
+
 /* hero CTAs: side by side on wide screens, equal-width stack on phones.
    Replaces the inline flex styles that let the two buttons render at
    mismatched natural widths when they wrapped. */
@@ -65,9 +70,7 @@ html[data-theme="dark"] .navigation-item:active{background-color:#2a3036}
 }
 
 @media (max-width: 767px){
-/* the export's 80-120px section gaps read as dead space on a phone */
-.home-content-wrap{margin-top:32px;margin-bottom:64px}
-.about-grid{grid-row-gap:32px;margin-bottom:48px}
+.about-grid{grid-row-gap:32px}
 .motto-wrap{margin-bottom:60px}
 /* a fixed 620px hero clips once text wraps; let content set the height */
 .intro-header{height:auto;min-height:540px}
