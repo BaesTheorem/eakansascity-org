@@ -1,8 +1,10 @@
-/* Dark mode for eakansascity.org.
-   Light mode stays exactly the Webflow export; every dark rule hangs off
-   html[data-theme="dark"], which an inline head snippet sets before first paint
-   (saved choice in localStorage, otherwise the system preference). js/theme.js
-   owns the toggle. Dark colors are contrast-checked against #101214 / #1a1d20. */
+/* Custom layer for eakansascity.org: dark mode, then mobile polish.
+   The Webflow export css stays untouched; this file loads last and overrides.
+   Dark rules hang off html[data-theme="dark"], which an inline head snippet
+   sets before first paint (saved choice in localStorage, otherwise the system
+   preference). js/theme.js owns the toggle. Dark colors are contrast-checked
+   against #101214 / #1a1d20. Mobile rules live at the bottom, scoped to the
+   same breakpoints the export uses (991 / 767 / 479). */
 
 /* the toggle button, both themes */
 .nav-actions{position:relative;z-index:5;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;gap:14px}
@@ -35,3 +37,50 @@ html[data-theme="dark"] .divider{background-color:#26292d}
 /* hero: fade the photo into the dark page instead of into white */
 html[data-theme="dark"] .gradient-bg{background-image:-webkit-gradient(linear,left top,left bottom,color-stop(44%,rgba(18,80,92,.55)),to(#101214));background-image:linear-gradient(180deg,rgba(18,80,92,.55) 44%,#101214)}
 html[data-theme="dark"] .intro-header{background-color:#1a1d20}
+
+/* ---- Mobile polish ---- */
+
+/* invisible hit-area bump for the 36px toggle, safe at every width */
+.theme-toggle{position:relative}
+.theme-toggle::after{content:"";position:absolute;inset:-5px}
+
+/* hero CTAs: side by side on wide screens, equal-width stack on phones.
+   Replaces the inline flex styles that let the two buttons render at
+   mismatched natural widths when they wrapped. */
+.hero-buttons{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:16px;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap}
+
+@media (max-width: 991px){
+/* The logo's 300px min-content overflowed the nav row on phones, which shoved
+   the theme toggle on top of the hamburger. Let the logo shrink, cap its art,
+   pad the hamburger up to a 42px tap target, and hold space between the two. */
+.logo-link{-webkit-box-flex:1;-webkit-flex:1 1 auto;-ms-flex:1 1 auto;flex:1 1 auto;min-width:0;padding-right:8px}
+.logo-image{width:100%;max-width:240px}
+.menu-button{padding:10px}
+.nav-actions{margin-left:6px}
+/* iOS Safari mishandles fixed backgrounds; keep the parallax to desktop */
+.intro-header{background-attachment:scroll}
+/* the open dropdown's hover/active bgs are hardcoded light in the export */
+html[data-theme="dark"] .navigation-item:hover{background-color:#22262a}
+html[data-theme="dark"] .navigation-item:active{background-color:#2a3036}
+}
+
+@media (max-width: 767px){
+/* the export's 80-120px section gaps read as dead space on a phone */
+.home-content-wrap{margin-top:32px;margin-bottom:64px}
+.about-grid{grid-row-gap:32px;margin-bottom:48px}
+.motto-wrap{margin-bottom:60px}
+/* a fixed 620px hero clips once text wraps; let content set the height */
+.intro-header{height:auto;min-height:540px}
+.gradient-bg{padding:56px 0}
+/* the export drops this type to 30px but leaves the 52px line-height */
+.heading-jumbo-small{line-height:44px}
+}
+
+@media (max-width: 479px){
+.logo-image{max-width:205px}
+.menu{margin-left:10px}
+.heading-jumbo-small{font-size:24px;line-height:36px}
+.section-heading{font-size:28px;line-height:38px}
+.hero-buttons{gap:12px}
+.hero-buttons .button{-webkit-box-flex:1;-webkit-flex:1 1 100%;-ms-flex:1 1 100%;flex:1 1 100%;max-width:320px}
+}
