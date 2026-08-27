@@ -45,9 +45,16 @@ html[data-theme="dark"] .intro-header{background-color:#1a1d20}
 .theme-toggle::after{content:"";position:absolute;inset:-5px}
 
 /* About and Our group should fit one screen without scrolling: the export
-   framed them with 80px top / 120px + 80px bottom margins of empty space */
-.home-content-wrap{margin-top:16px;margin-bottom:32px}
+   framed them with 80px top / 120px + 80px bottom margins of empty space,
+   plus a tall nav and generous heading margins */
+.home-content-wrap{margin-top:0;margin-bottom:32px}
 .about-grid{margin-bottom:24px}
+.home-section-wrap{margin-bottom:10px}
+.home-section-wrap .label{margin-bottom:4px}
+.section-heading{margin-top:4px;margin-bottom:10px}
+@media (min-width: 992px){
+.navigation{padding-top:20px;padding-bottom:20px}
+}
 
 /* hero CTAs: side by side on wide screens, equal-width stack on phones.
    Replaces the inline flex styles that let the two buttons render at
